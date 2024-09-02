@@ -69,7 +69,6 @@ export class CodeGeniePanel {
     `;
   }
 
-  // Inside the `_setWebviewMessageListener` method:
   private _setWebviewMessageListener(webview: Webview) {
     webview.onDidReceiveMessage(
       (message: any) => {
@@ -77,17 +76,24 @@ export class CodeGeniePanel {
         const input1 = message.input1;
         const input2 = message.input2;
         const input3 = message.input3;
-        const needCodeBase = message.needCodeBase;
-        const needAIAssistant = message.needAIAssistant;
   
         switch (command) {
           case "ready":
             // Define the path to the batch file and arguments
             const batchFilePath = 'C:\\Users\\nisha\\OneDrive\\Desktop\\task.bat';
-            const args = [input1, input2, input3, needCodeBase, needAIAssistant];
+            const args = [input1, input2, input3];
             
-            // Execute the batch file and capture its output
-            const cmd = spawn(batchFilePath, args, { shell: true });
+            // Build the command array
+            const cmdArgs = ['/k', batchFilePath, ...args];
+  
+            // Output command to the console for debugging
+            console.log('Executing command:', `cmd.exe ${cmdArgs.join(' ')}`);
+  
+            // Execute the command
+            const cmd = spawn('cmd.exe', cmdArgs, {
+              cwd: path.dirname(batchFilePath), // Optional: change working directory
+              shell: true
+            });
   
             cmd.stdout.on('data', (data: Buffer) => {
               console.log(`stdout: ${data.toString()}`);
@@ -107,12 +113,12 @@ export class CodeGeniePanel {
   
             break;
   
-          // Additional cases can be added here as needed
+          // Add more cases as needed
         }
       },
       undefined,
       this._disposables
     );
   }
-   
+  
 }
