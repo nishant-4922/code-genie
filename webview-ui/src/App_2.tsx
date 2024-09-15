@@ -5,7 +5,7 @@ import { vscode } from './vscode';
 function App() {
   const [input1, setInput1] = useState('');
   const [input2, setInput2] = useState('');
-  const [module, setModule] = useState(''); // State for the module
+  const [input3, setInput3] = useState('');
   const [needCodeBase, setNeedCodeBase] = useState('no');
   const [needAIAssistant, setNeedAIAssistant] = useState('no');
   const [isRunning, setIsRunning] = useState(false);
@@ -17,7 +17,7 @@ function App() {
       text: "Hey there partner! 🤠",
       input1: input1,
       input2: input2,
-      module: module, // Send the selected module
+      input3: input3,
       needCodeBase: needCodeBase,
       needAIAssistant: needAIAssistant
     });
@@ -35,7 +35,7 @@ function App() {
     <main style={styles.main}>
       <div style={styles.container}>
         <h1 style={styles.header}>Code Genie</h1>
-
+        
         <label htmlFor="input1" style={styles.label}>Code base Path:</label>
         <input 
           type="text" 
@@ -54,19 +54,14 @@ function App() {
           onChange={(e) => setInput2(e.target.value)}
         />
 
-        {/* Dropdown for Module */}
-        <label htmlFor="module" style={styles.label}>Module:</label>
-        <select 
-          id="module" 
-          style={styles.input} 
-          value={module} 
-          onChange={(e) => setModule(e.target.value)}
-        >
-          <option value="">Select Module</option>
-          <option value="Module A">Errc_MOB</option>
-          <option value="Module B">EL1_RX</option>
-          <option value="Module C">EL1_TX</option>
-        </select>
+        <label htmlFor="input3" style={styles.label}>Module:</label>
+        <input 
+          type="text" 
+          id="input3" 
+          style={styles.input}
+          value={input3}
+          onChange={(e) => setInput3(e.target.value)}
+        />
 
         <div style={styles.checkboxContainer}>
           <div style={styles.checkbox}>
@@ -94,7 +89,7 @@ function App() {
 
         <VSCodeButton style={styles.button} onClick={handleHowdyClick}>Run Code Genie</VSCodeButton>
 
-        {isRunning && <p style={styles.runningMessage}>Code Genie is Started Successfully</p>}
+        {isRunning && <p style={styles.runningMessage}>Code Genie is Stated Successfully </p>}
       </div>
     </main>
   );

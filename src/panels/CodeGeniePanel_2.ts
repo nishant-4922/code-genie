@@ -3,6 +3,9 @@ import { getNonce, getUri } from "../utilities";
 const { spawn } = require('child_process');
 const path = require('path');
 
+/**
+ * This class manages the state and behavior of HelloWorld webview panels.
+ */
 export class CodeGeniePanel {
   public static currentPanel: CodeGeniePanel | undefined;
   private readonly _panel: WebviewPanel;
@@ -66,43 +69,50 @@ export class CodeGeniePanel {
     `;
   }
 
+  // Inside the `_setWebviewMessageListener` method:
   private _setWebviewMessageListener(webview: Webview) {
     webview.onDidReceiveMessage(
       (message: any) => {
         const command = message.command;
         const input1 = message.input1;
         const input2 = message.input2;
-        const module = message.module; // Updated to use module
+        const input3 = message.input3;
         const needCodeBase = message.needCodeBase;
         const needAIAssistant = message.needAIAssistant;
-
+  
         switch (command) {
           case "ready":
-            const batchFilePath = 'C:\\Users\\nisha\\OneDrive\\Desktop\\code-genie\\task.bat';
-            const args = [`"${input1}"`, `"${input2}"`, `"${module}"`, `"${needCodeBase}"`, `"${needAIAssistant}"`];
-
+            // Define the path to the batch file and arguments
+            const batchFilePath = 'C:\\Users\\nisha\\OneDrive\\Desktop\\task.bat';
+            const args = [input1, input2, input3, needCodeBase, needAIAssistant];
+            
+            // Execute the batch file and capture its output
             const cmd = spawn(batchFilePath, args, { shell: true });
+  
             cmd.stdout.on('data', (data: Buffer) => {
               console.log(`stdout: ${data.toString()}`);
             });
-
+  
             cmd.stderr.on('data', (data: Buffer) => {
               console.error(`stderr: ${data.toString()}`);
             });
-
+  
             cmd.on('close', (code: number) => {
               console.log(`child process exited with code ${code}`);
             });
-
+  
             cmd.on('error', (err: Error) => {
               console.error(`Failed to start subprocess: ${err.message}`);
             });
-
+  
             break;
+  
+          // Additional cases can be added here as needed
         }
       },
       undefined,
       this._disposables
     );
   }
+   
 }
